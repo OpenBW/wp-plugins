@@ -4,40 +4,43 @@ jQuery(document).ready( function($) {
 		 var code = e.keyCode || e.which;
 		 
 		 switch(code) {
-		 case 32:
-		 case 80:
+		 case 32: // space
+		 case 80: // p
 			 toggle_pause();
 			 break;
-		 case 65:
-		 case 85:
+		 case 65: // a
+		 case 85: // u
 			 play_faster();
 			 break;
-		 case 90:
-		 case 68:
+		 case 90: // z
+		 case 68: // d
 			 play_slower();
 			 break;
-		 case 8:
+		 case 83:
+			 toggle_sound();
+			 break;
+		 case 8: // backspace
 			 jump_back(10);
 			 break;
-		 case 72:
+		 case 72: // h
 			 $('#quick_help').foundation('open');
 			 break;
-		 case 49:
+		 case 49: // 1
 			 toggle_info_tab(1);
 			 break;
-		 case 50:
+		 case 50: // 2
 			 toggle_info_tab(2);
 			 break;
-		 case 51:
+		 case 51: // 3
 			 toggle_info_tab(3);
 			 break;
-		 case 52:
+		 case 52: // 4
 			 toggle_info_tab(4);
 			 break;
 		 }
 	});
 	
-	$('.slider-handle').mousedown(function(){
+	$('#game-slider-handle').mousedown(function(){
 	    isDown = true;
 	});
 
@@ -52,7 +55,7 @@ jQuery(document).ready( function($) {
 		document.getElementById("canvas").innerHeight = window.innerHeight - 147;
 	});
 	
-	$('.slider').on('moved.zf.slider', function() {
+	$('#game-slider').on('moved.zf.slider', function() {
 		if (isDown) {
 			_replay_set_value(6, document.getElementById("sliderOutput").value / 200);
 		}
@@ -63,6 +66,11 @@ jQuery(document).ready( function($) {
 		toggle_pause();
 	});
 	
+	$('#rv-rc-sound').on('click', function() {
+		
+		toggle_sound();
+	});
+	
 	$('#rv-rc-faster').on('click', function() {
 		
 		play_faster();
@@ -71,6 +79,24 @@ jQuery(document).ready( function($) {
 	$('#rv-rc-slower').on('click', function() {
 		
 		play_slower();
+	});
+	
+	$('#rv-rc-sound').mouseenter(function() {
+		$('#volume-slider-wrapper').css("display", "block");
+	});
+	$('.volume').mouseleave(function() {
+	    $('#volume-slider-wrapper').css("display", "none");
+	});
+	$('#volume-slider').on('moved.zf.slider', function() {
+		volume_index = document.getElementById("volumeOutput").value / 100;
+		if (volume_index > 0) {
+			$('#rv-rc-sound').addClass('rv-rc-sound');
+			$('#rv-rc-sound').removeClass('rv-rc-muted');
+		} else {
+			$('#rv-rc-sound').removeClass('rv-rc-sound');
+			$('#rv-rc-sound').addClass('rv-rc-muted');
+		}
+		Module.set_volume(volume_index);
 	});
 	
 	function drag_start(event) {
@@ -91,6 +117,7 @@ jQuery(document).ready( function($) {
 	document.getElementById('info_tab').addEventListener('dragstart',drag_start,false);
 	document.getElementById("canvas").addEventListener('drop', drop, false);
 	update_army_tab([]);
+	$('#volume-slider-wrapper').css("display", "none");
 })	
 
 function toggle_info_tab(tab_nr) {
@@ -129,6 +156,19 @@ function play_slower() {
 	_replay_set_value(0, current_speed / 2);
 }
 
+var volume_index;
+function toggle_sound() {
+	
+	$('#rv-rc-sound').toggleClass('rv-rc-sound');
+	$('#rv-rc-sound').toggleClass('rv-rc-muted');
+	
+	if ($('#rv-rc-sound').hasClass('rv-rc-sound')) {
+		Module.set_volume(volume_index);
+	} else {
+		Module.set_volume(0);
+	}
+}
+
 function toggle_pause() {
 	
 	$('#rv-rc-play').toggleClass('rv-rc-play');
@@ -146,7 +186,7 @@ function update_speed(speed) {
 
 function get_image_src(id) {
 
-    return "http://www.openbw.com/bw/production_icons/hd/icon " + id + ".png";
+    return "http://www.openbw.com/bw/production_icons/icon " + id + ".bmp";
 }
 
 function set_icon(tab_nr, parent_element, child_nr, icon_id, percentage, info) {
@@ -443,4 +483,5 @@ function set_race(player, race) {
 function set_apm(player, apm) {
 	document.getElementById("apm" + player).innerHTML = apm;
 }
+
 

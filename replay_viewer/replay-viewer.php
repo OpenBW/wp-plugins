@@ -133,13 +133,13 @@ class Replay_Viewer_Widget extends WP_Widget {
 	 */
 	public function show_viewer_ui() {
 		
-		wp_register_script( 'info-bar', WP_PLUGIN_URL.'/replay_viewer/info-bar.js', array('jquery'), '1.0', true);
+		wp_register_script( 'info-bar', WP_PLUGIN_URL.'/replay_viewer/info-bar.js', array('jquery'), '1.0.1', true);
 		wp_enqueue_script( 'info-bar' );
 		
-		wp_register_script( 'start', WP_PLUGIN_URL.'/replay_viewer/start.js', array('info-bar'), '1.0', true);
+		wp_register_script( 'start', WP_PLUGIN_URL.'/replay_viewer/start.js', array('info-bar'), '1.0.1', true);
 		wp_enqueue_script( 'start' );
 		
-		wp_register_script( 'test', WP_PLUGIN_URL.'/replay_viewer/test.js', array('start'), '1.0', true);
+		wp_register_script( 'test', WP_PLUGIN_URL.'/replay_viewer/test.js', array('start'), '1.0.1', true);
 		wp_enqueue_script( 'test' );
 		
 		$rep_url = $_GET['rep'];
@@ -200,28 +200,39 @@ class Replay_Viewer_Widget extends WP_Widget {
 			</div>
 			
 			<div class="shrink column replay-control">
-				<div class="row rv-rc-progress-bar">
-					<div class="column">
-						<div class="slider" data-slider data-initial-start="0" data-end="200">
-						  <span class="slider-handle"  data-slider-handle role="slider" tabindex="1"></span>
-						  <span class="slider-fill" data-slider-fill></span>
-						  <input type="hidden" id="sliderOutput">
+				
+				<div class="row rv-rc-controls">
+					<div class="small-3 columns volume">
+						<div id="volume-slider-wrapper">
+							<div id="volume-slider" class="slider vertical" data-slider data-initial-start='50' data-end='100' data-vertical="true">
+								<span id="volume-slider-handle" class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="volumeOutput"></span>
+								<span class="slider-fill" data-slider-fill></span>
+								<input type="hidden" id="volumeOutput">
+							</div>
 						</div>
+						<button id="rv-rc-sound" type="button" class="rv-rc-sound"></button>
+					</div>
+					<div class="small-3 columns">
+						<button id="rv-rc-play" type="button" class="rv-rc-pause"></button>
+					</div>
+					<div class="small-3 columns">
+						<button id="rv-rc-slower" type="button" class="rv-rc-slower"></button>
+					</div>
+					<div class="small-3 columns">
+						<button id="rv-rc-faster" type="button" class="rv-rc-faster"></button>
 					</div>
 				</div>
 				<div class="row rv-rc-timer">
 					<div id="rv-rc-timer" class="small-6 columns">-</div>
 					<div id="rv-rc-speed" class="small-6 columns">-</div>
 				</div>
-				<div class="row rv-rc-controls">
-					<div class="small-4 columns">
-						<button id="rv-rc-play" type="button" class="rv-rc-pause"></button>
-					</div>
-					<div class="small-4 columns">
-						<button id="rv-rc-slower" type="button" class="rv-rc-slower"></button>
-					</div>
-					<div class="small-4 columns">
-						<button id="rv-rc-faster" type="button" class="rv-rc-faster"></button>
+				<div class="row rv-rc-progress-bar">
+					<div class="column">
+						<div id="game-slider" class="slider" data-slider data-initial-start="0" data-end="200">
+							<span id="game-slider-handle" class="slider-handle"  data-slider-handle role="slider" tabindex="1" aria-controls="sliderOutput"></span>
+						  	<span class="slider-fill" data-slider-fill></span>
+						  	<input type="hidden" id="sliderOutput">
+						</div>
 					</div>
 				</div>
 			</div>

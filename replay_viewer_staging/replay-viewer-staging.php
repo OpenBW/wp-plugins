@@ -168,13 +168,13 @@ class Replay_Viewer_Staging extends WP_Widget {
 	 */
 	public function show_viewer_ui() {
 
-		wp_register_script( 'info-bar-staging', WP_PLUGIN_URL.'/replay_viewer_staging/info-bar.js', array('jquery'), '1.0', true);
+		wp_register_script( 'info-bar-staging', WP_PLUGIN_URL.'/replay_viewer_staging/info-bar.js', array('jquery'), '1.0.1', true);
 		wp_enqueue_script( 'info-bar-staging' );
 		
-		wp_register_script( 'start-staging', WP_PLUGIN_URL.'/replay_viewer_staging/start.js', array('info-bar-staging'), '1.0', true);
+		wp_register_script( 'start-staging', WP_PLUGIN_URL.'/replay_viewer_staging/start.js', array('info-bar-staging'), '1.0.1', true);
 		wp_enqueue_script( 'start-staging' );
 		
-		wp_register_script( 'test-staging', WP_PLUGIN_URL.'/replay_viewer_staging/test.js', array('start-staging'), '1.0', true);
+		wp_register_script( 'test-staging', WP_PLUGIN_URL.'/replay_viewer_staging/test.js', array('start-staging'), '1.0.1', true);
 		wp_enqueue_script( 'test-staging' );
 		
 		$rep_url = $_GET['rep'];

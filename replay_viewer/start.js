@@ -83,6 +83,7 @@ jQuery(document).ready( function($) {
 	
 	add_drag_and_drop_listeners(canvas);
 	document.getElementById("mpq_files").addEventListener("change", on_mpq_specify_select, false);
+	document.getElementById("select_rep_file").addEventListener("change", on_rep_file_select, false);
 	
 	
 	$('#play_demo_button').on('click', function(e){
@@ -183,6 +184,12 @@ function update_info_bar() {
  * Listener functions
  *****************************/
 
+function on_rep_file_select(e) {
+	
+	var input_files = e.target.files;
+	load_replay_file(input_files, Module.canvas);
+}
+
 function on_mpq_specify_select(e) {
 	
     var input_files = e.target.files;
@@ -225,6 +232,7 @@ function on_mpq_specify_select(e) {
     	store_mpq_in_db();
     	
     	$('#play_demo_button').removeClass('disabled');
+    	$('#select_replay_label').removeClass('disabled');
     	close_modal();
     }
 }
@@ -241,34 +249,37 @@ function add_drag_and_drop_listeners(element) {
 	    e.stopPropagation();
 	    e.preventDefault();
 	    var files = e.dataTransfer.files;
-	    if (files.length != 1) return;
-	    Module.print("loading replay from file " + files[0].name);
-	    var reader = new FileReader();
-	        (function() {
-	            reader.onloadend = function(e) {
-	                if (!e.target.error && e.target.readyState != FileReader.DONE) throw "read failed with no error!?";
-	                if (e.target.error) throw "read failed: " + e.target.error;
-	                var arr = new Int8Array(e.target.result);
-	                if (main_has_been_called) {
-	                    var buf = allocate(arr, 'i8', ALLOC_NORMAL);
-	                    start_replay(buf, arr.length);
-	                    _free(buf);
-	                } else {
-	                    load_replay_data_arr = arr;
-	                    print_to_canvas(files[0].name, 15, 80, element);
-	                    if (has_all_files()) {
-	                    	on_read_all_done();
-	                    }
-	                }
-	            };
-	        })();
-	        reader.readAsArrayBuffer(files[0]);
+	    load_replay_file(files, element);
 	}, false);
 }
 
 /*****************************
  * Helper functions
  *****************************/
+function load_replay_file(files, element) {
+	if (files.length != 1) return;
+    Module.print("loading replay from file " + files[0].name);
+    var reader = new FileReader();
+        (function() {
+            reader.onloadend = function(e) {
+                if (!e.target.error && e.target.readyState != FileReader.DONE) throw "read failed with no error!?";
+                if (e.target.error) throw "read failed: " + e.target.error;
+                var arr = new Int8Array(e.target.result);
+                if (main_has_been_called) {
+                    var buf = allocate(arr, 'i8', ALLOC_NORMAL);
+                    start_replay(buf, arr.length);
+                    _free(buf);
+                } else {
+                    load_replay_data_arr = arr;
+                    print_to_canvas(files[0].name, 15, 80, element);
+                    if (has_all_files()) {
+                    	on_read_all_done();
+                    }
+                }
+            };
+        })();
+        reader.readAsArrayBuffer(files[0]);
+}
 
 function resize_canvas(canvas) {
 	
@@ -558,6 +569,7 @@ function on_read_all_done() {
         	load_replay_url(ajax_object.replay_file);
         } else {
         	$('#play_demo_button').removeClass('disabled');
+        	$('#select_replay_label').removeClass('disabled');
         }
     }
 }

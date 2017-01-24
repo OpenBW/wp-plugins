@@ -89,7 +89,7 @@ jQuery(document).ready( function($) {
 	$('#play_demo_button').on('click', function(e){
 		
 		if (has_all_files()) {
-			load_replay_url("../bw/SlayerMN_Weakinside.rep");
+			load_replay_url("/bw/flash_vs_jaedong.rep");
 		}
 	});
 	

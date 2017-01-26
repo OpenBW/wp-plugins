@@ -184,12 +184,10 @@ function update_speed(speed) {
 	document.getElementById("rv-rc-speed").innerHTML = "speed: " + speed + "x";
 }
 
-function get_image_src(id) {
-
-    return "http://www.openbw.com/bw/production_icons/icon " + id + ".bmp";
-}
-
 function set_icon(tab_nr, parent_element, child_nr, icon_id, percentage, info) {
+	
+	if (icon_id < 10) icon_id = "0" + icon_id;
+	if (icon_id < 100) icon_id = "0" + icon_id;
 	
 	var img_src = "http://www.openbw.com/bw/production_icons/icon " + icon_id + ".bmp";
 	var element = parent_element.children("div").eq(child_nr);
@@ -243,12 +241,9 @@ function update_army_tab(complete_units) {
     	element = $('#army_tab_content' + (i + 1));
     	for (type in unit_types[players[i]]) {
 			
-			var u_nr = type < 10 ? "0" + type : type;
-			if (type < 100) u_nr = "0" + u_nr;
-			
 			var count = unit_types[players[i]][type];
 			
-			set_icon(2, element, type_count, u_nr, 1, count);
+			set_icon(2, element, type_count, type, 1, count);
 			++type_count;
 		}
     	for (var j = type_count; j < 20; j++) {
@@ -336,11 +331,9 @@ function update_production_tab(incomplete_units) {
 			build_time = u.unit_type().build_time;
 		}
 		
-		var u_nr = t < 10 ? "0" + t : t;
-		if (t < 100) u_nr = "0" + u_nr;
 		var build_percentage = 1 - u.remaining_build_time / build_time;
 		
-		unit_names[u.owner].push([u_nr, build_percentage]);
+		unit_names[u.owner].push([t, build_percentage]);
 	}
 	
 	var element;

@@ -3,6 +3,7 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 require_once 'Unirest.php';
 require_once 'data_table.php';
+require_once 'config.php';
 
 /**
  Plugin Name: OpenBW SSCAIT Widget
@@ -42,14 +43,14 @@ class Sscait_Widget extends WP_Widget {
 		
 		$playerlist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/bots.php",
 				array(
-						"X-Mashape-Key" => "",
+						"X-Mashape-Key" => SSCAIT_KEY,
 						"Accept" => "application/json"
 				)
 				);
 		
 		$gamelist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/games.php?future=false&count=200",
 				array(
-						"X-Mashape-Key" => "",
+						"X-Mashape-Key" => SSCAIT_KEY,
 						"Accept" => "application/json"
 				)
 				);

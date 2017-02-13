@@ -34,7 +34,7 @@ $(document).ready(function() {
 	    	console.log("deselected a bot. " + counter + " bots remaining.");
 	    	var index = bot_names.indexOf($(this).attr('id'));
 	    	if (index > -1) {
-	    	    array.splice(index, 1);
+	    		bot_names.splice(index, 1);
 	    	}
 	    	if (counter == 0) {
 	    		console.log("stop pulling queue.");
@@ -70,11 +70,14 @@ var parseQueueCallback = function(response) {
 	});
 	
 	if (playSound) {
-		console.log('playing sound');
+		console.log('player about to play.');
+		if ($('#playerAnnouncement').css('display') == 'none') {
+			console.log('playing sound');
+			var audio = new Audio(jsFileLocation);
+			audio.play();
+		}
 		$('#playerAnnouncement').html(playerNames + "about to play!");
 		$('#playerAnnouncement').css('display', 'block');
-		var audio = new Audio(jsFileLocation);
-		audio.play();
 	} else {
 		$('#playerAnnouncement').css('display', 'none');
 	}

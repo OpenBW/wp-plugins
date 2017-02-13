@@ -55,7 +55,8 @@ var parseQueueCallback = function(response) {
 	var playSound = false;
 	var playerNames = "";
 	
-	response.body.forEach(function(entry) {
+	for(var j = 1; j <= 2; j++) {
+		var entry = response.body[response.body.length - j];
 	    console.log("host: " + entry.host + ", guest: " + entry.guest);
 	    for (var i = 0; i < bot_names.length; i++) {
 	    	if (bot_names[i].localeCompare(entry.host) == 0) {
@@ -67,7 +68,7 @@ var parseQueueCallback = function(response) {
 	    		playSound = true;
 	    	}
 	    }
-	});
+	};
 	
 	if (playSound) {
 		console.log('player about to play.');

@@ -244,7 +244,7 @@ add_shortcode ( 'sscaitListings', 'sscait_func' );
  */
 function check_queue_func() {
 
-	$gamelist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/games.php?future=true&count=2",
+	$gamelist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/games.php?future=true&count=100",
 			array(
 					"X-Mashape-Key" => SSCAIT_KEY,
 					"Accept" => "application/json"

@@ -41,6 +41,10 @@ class Sscait_Widget extends WP_Widget {
 		wp_register_script( 'sscait', WP_PLUGIN_URL.'/sscait/sscait.js', array('datatables-foundation'), '1.0', true);
 		wp_enqueue_script( 'sscait' );
 		
+		wp_localize_script( 'sscait', 'ajax_object', array(
+				'ajax_url' 			=> admin_url( 'admin-ajax.php' )
+		) );
+		
 		$playerlist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/bots.php",
 				array(
 						"X-Mashape-Key" => SSCAIT_KEY,
@@ -59,6 +63,8 @@ class Sscait_Widget extends WP_Widget {
 		$gamearray = json_decode($gamelist->raw_body, true);
 		
 		?>
+		<span>Check the checkbox of a player to be alerted via sound and callout once the player is about to play on <a href="https://www.twitch.tv/certicky">stream</a>!</span>
+		<div id="playerAnnouncement" class="callout warning" style="display: none"></div>
 		<ul class="tabs" data-tabs id="sscait-tabs">
 		  <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Players</a></li>
 		  <li class="tabs-title"><a href="#panel2">Replays</a></li>
@@ -79,7 +85,7 @@ class Sscait_Widget extends WP_Widget {
 							
 							?>
 							<tr>
-								<td>
+								<td><input class="checkbox" id="<?php echo $entry["name"]?>" type="checkbox">
 									<a data-toggle="name-dropdown<?php echo $entry_counter?>"><?php echo $entry["name"]?></a>
 									<div class="dropdown-pane" id="name-dropdown<?php echo $entry_counter?>" data-dropdown>
 									  <?php echo $entry["description"]?>
@@ -232,3 +238,22 @@ function sscait_func($atts, $content = null) {
 	return $output;
 }
 add_shortcode ( 'sscaitListings', 'sscait_func' );
+
+/**
+ * Ajax callback to process answer and create a new DRPM item.
+ */
+function check_queue_func() {
+
+	$gamelist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/games.php?future=true&count=2",
+			array(
+					"X-Mashape-Key" => SSCAIT_KEY,
+					"Accept" => "application/json"
+			)
+			);
+
+	echo json_encode($gamelist);
+	wp_die();
+}
+add_action('wp_ajax_nopriv_check_queue', 'check_queue_func');
+add_action('wp_ajax_check_queue', 'check_queue_func');
+

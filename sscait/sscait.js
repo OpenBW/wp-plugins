@@ -27,7 +27,7 @@ $(document).ready(function() {
 	    	if (counter == 1) {
 	    		console.log("start pulling queue.");
 	    		check_queue();
-	    		interval = window.setInterval(check_queue, 180000);
+	    		interval = window.setInterval(check_queue, 60000);
 	    	}
 	    } else {
 	    	counter--;
@@ -50,25 +50,24 @@ var jsFileLocation = $('script[src*=sscait]').attr('src');  // the js file path
 jsFileLocation = jsFileLocation.replace('sscait.js', 'bell.wav');
 
 var parseQueueCallback = function(response) {
+	
 	console.log('getting ajax response: ' + response);
 	
+	var matches = JSON.parse(response);
 	var playSound = false;
 	var playerNames = "";
 	
-	for(var j = 1; j <= 2; j++) {
-		var entry = response.body[response.body.length - j];
-	    console.log("host: " + entry.host + ", guest: " + entry.guest);
-	    for (var i = 0; i < bot_names.length; i++) {
-	    	if (bot_names[i].localeCompare(entry.host) == 0) {
-	    		playerNames += entry.host + " ";
-	    		playSound = true;
-	    	}
-	    	if (bot_names[i].localeCompare(entry.guest) == 0) {
-	    		playerNames += entry.guest + " ";
-	    		playSound = true;
-	    	}
-	    }
-	};
+    console.log("host: " + matches['nextGame1Player1'] + ", guest: " + matches['nextGame1Player2']);
+    for (var i = 0; i < bot_names.length; i++) {
+    	if (bot_names[i].localeCompare(matches['nextGame1Player1']) == 0) {
+    		playerNames += matches['nextGame1Player1'] + " ";
+    		playSound = true;
+    	}
+    	if (bot_names[i].localeCompare(matches['nextGame1Player2']) == 0) {
+    		playerNames += matches['nextGame1Player2'] + " ";
+    		playSound = true;
+    	}
+    }
 	
 	if (playSound) {
 		console.log('player about to play.');

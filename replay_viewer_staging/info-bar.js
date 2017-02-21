@@ -25,6 +25,9 @@ jQuery(document).ready( function($) {
 		 case 72: // h
 			 $('#quick_help').foundation('open');
 			 break;
+		 case 78: // n
+			 $('.rv-rc-progress-bar>div').toggle();
+			 break;
 		 case 49: // 1
 			 toggle_info_tab(1);
 			 break;
@@ -46,6 +49,9 @@ jQuery(document).ready( function($) {
 	$('#game-slider-handle').mousedown(function(){
 	    isDown = true;
 	});
+	$('#game-slider').click(function(){
+	    isClicked = true;
+	});
 
 	$(document).mouseup(function(){
 	    if(isDown){
@@ -59,8 +65,9 @@ jQuery(document).ready( function($) {
 	});
 	
 	$('#game-slider').on('moved.zf.slider', function() {
-		if (isDown) {
+		if (isDown || isClicked) {
 			_replay_set_value(6, document.getElementById("sliderOutput").value / 200);
+			isClicked = false;
 		}
 	});
 	
@@ -138,6 +145,7 @@ function toggle_info_tab(tab_nr) {
 		 $('#info_tab').toggle();
 		 $('#tab_link' + tab_nr).click();
 	 }
+	 update_info_tab();
 }
 
 function jump_back(seconds) {
@@ -151,6 +159,7 @@ function play_faster() {
 	var current_speed = _replay_get_value(0);
 	if (current_speed < 1024) {
 		_replay_set_value(0, current_speed * 2);
+		update_speed(current_speed * 2);
 	}
 }
 
@@ -158,6 +167,7 @@ function play_slower() {
 	
 	var current_speed = _replay_get_value(0);
 	_replay_set_value(0, current_speed / 2);
+	update_speed(current_speed / 2);
 }
 
 var volume_index;
@@ -318,7 +328,17 @@ function update_upgrades_tab(upgrades) {
 	}
 }
 
+var productionUnit_compare = function (unit1, unit2) {
+	
+	var build_time1 = unit1.build_type() ? unit1.build_type().build_time : unit1.unit_type().build_time;
+	var build_time2 = unit2.build_type() ? unit2.build_type().build_time : unit2.unit_type().build_time;
+	
+	return (build_time2 - unit2.remaining_build_time)  - (build_time1 - unit1.remaining_build_time);
+}
+
 function update_production_tab(incomplete_units) {
+	
+	incomplete_units.sort(productionUnit_compare);
 	
 	var unit_names = [[], [], [], [], [], [], [], [], [], [], [], []];
 	
@@ -377,10 +397,11 @@ function update_timer(sec_num) {
 }
 
 var isDown = false;
+var isClicked = false;
 
 function update_handle_position(value) {
 	
-	if (!isDown) {
+	if (!isDown && !isClicked) {
 		document.getElementById("sliderOutput").value = value;
 		$('#sliderOutput').trigger("change");
 	}
@@ -431,7 +452,7 @@ function set_color(player, color) {
 		hex_color = "#4068d4";
 		break;
 	}
-	$('.player_color' + player).css('background-color', hex_color);
+	$('.player_color' + player).css('border-color', hex_color);
 }
 
 function set_nick(player, nick) {

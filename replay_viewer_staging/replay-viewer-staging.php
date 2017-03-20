@@ -58,6 +58,24 @@ class Replay_Viewer_Staging extends WP_Widget {
 		<?php 
 	}
 	
+	private function add_graphs() {
+		?>
+		<aside draggable="true" id="graphs_tab" class="info_tab">
+			<ul class="tabs" data-tabs id="graphs-tabs">
+				<li class="tabs-title is-active"><a id="graphs_link1" href="#graph_tab_panel1"
+					aria-selected="true">Floating Resources</a></li>
+				<!-- <li class="tabs-title"><a id="graphs_link2" href="#graph_tab_panel2">Unused</a></li>
+				 -->
+			</ul>
+			<div class="tabs-content" data-tabs-content="graphs-tabs">
+				<div class="tabs-panel is-active" id="graphs_tab_panel1">
+					<canvas id="infoChartCanvas"></canvas>
+				</div>
+			</div> 
+		</aside>
+		<?php
+	}
+	
 	private function add_info_tab() {
 		
 		?>
@@ -168,6 +186,9 @@ class Replay_Viewer_Staging extends WP_Widget {
 	 */
 	public function show_viewer_ui() {
 
+		wp_register_script( 'chartjs','https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js', '2.5.0', true);
+		wp_enqueue_script( 'chartjs' );
+		
 		wp_register_script( 'info-bar-staging', WP_PLUGIN_URL.'/replay_viewer_staging/info-bar.js', array('jquery'), '1.0.1', true);
 		wp_enqueue_script( 'info-bar-staging' );
 		
@@ -199,6 +220,7 @@ class Replay_Viewer_Staging extends WP_Widget {
 			<canvas class="emscripten" id="canvas"
 				oncontextmenu="event.preventDefault()"></canvas>
 				<?php $this->add_info_tab() ?>
+				<?php $this->add_graphs() ?>
 				<?php $this->add_debug_tab() ?>
 		</div>
 		<div class="expanded row align-justify infobar-container">

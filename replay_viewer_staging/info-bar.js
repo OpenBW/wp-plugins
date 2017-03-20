@@ -1,5 +1,66 @@
 jQuery(document).ready( function($) {	
 	
+	var ctx = document.getElementById("infoChartCanvas");
+	infoChart = new Chart(ctx, {
+	    type: 'line',
+	    animation: {duration: 0},
+	    data: {
+	        labels: [0],
+	        datasets: [{
+	            label: 'minerals 1',
+	            data: [50],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderWidth: 1
+	        },
+	        {
+	            label: 'gas 1',
+	            data: [0],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderDash: [2, 2],
+	            borderWidth: 1
+	        },
+	        {
+	            label: 'minerals 2',
+	            data: [0],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderWidth: 1
+	        },
+	        {
+	            label: 'gas 2',
+	            data: [0],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderDash: [2, 2],
+	            borderWidth: 1
+	        }
+	        ]
+	    },
+	    options: {
+	    	legend: {
+	            display: true,
+	            labels: {
+	                fontColor: 'rgb(255, 255, 255)'
+	            }
+	        },
+	        scales: {
+	        	xAxes: [{
+	                ticks: {
+	                    display: false
+	                }
+	            }],
+	            yAxes: [{
+	                ticks: {
+	                    fontColor: 'rgb(255, 255, 255)'
+	                }
+	            }]
+
+	        }
+	    }
+	});
+	
 	$(document).keyup(function(e) {
 		 var code = e.keyCode || e.which;
 		 
@@ -40,6 +101,9 @@ jQuery(document).ready( function($) {
 		 case 52: // 4
 			 toggle_info_tab(4);
 			 break;
+		 case 53: // 5
+			 toggle_graphs(1);
+			 break;
 		 case 48: // 0
 			 $('#debug_tab').toggle();
 			 break;
@@ -56,6 +120,7 @@ jQuery(document).ready( function($) {
 	$(document).mouseup(function(){
 	    if(isDown){
 	        isDown = false;
+        	set_replay_location(_replay_get_value(3));
 	    }
 	}); 
 	
@@ -66,7 +131,8 @@ jQuery(document).ready( function($) {
 	
 	$('#game-slider').on('moved.zf.slider', function() {
 		if (isDown || isClicked) {
-			_replay_set_value(6, document.getElementById("sliderOutput").value / 200);
+			var new_val = document.getElementById("sliderOutput").value / 200;
+			_replay_set_value(6, new_val);
 			isClicked = false;
 		}
 	});
@@ -125,11 +191,30 @@ jQuery(document).ready( function($) {
 	}
 	
 	document.getElementById('info_tab').addEventListener('dragstart',drag_start,false);
+	document.getElementById('graphs_tab').addEventListener('dragstart',drag_start,false);
 	document.getElementById('debug_tab').addEventListener('dragstart',drag_start,false);
 	document.getElementById("canvas").addEventListener('drop', drop, false);
 	update_army_tab([]);
 	$('#volume-slider-wrapper').css("display", "none");
 })	
+
+var infoChart;
+
+function toggle_graphs(tab_nr) {
+	
+	 if ($('#graphs_tab').is(":visible")) {
+		 
+		 if ($('#graphs_tab_panel' + tab_nr).hasClass("is-active")) {
+			 $('#graphs_tab').toggle();
+		 } else {
+			 $('#graphs_link' + tab_nr).click();
+		 }
+		 
+	 } else {
+		 $('#graphs_tab').toggle();
+		 $('#graphs_link' + tab_nr).click();
+	 }
+}
 
 function toggle_info_tab(tab_nr) {
 	
@@ -145,13 +230,15 @@ function toggle_info_tab(tab_nr) {
 		 $('#info_tab').toggle();
 		 $('#tab_link' + tab_nr).click();
 	 }
-	 update_info_tab();
+	 if (main_has_been_called) {
+		 update_info_tab();
+	 }
 }
 
 function jump_back(seconds) {
 	
 	var frame = Math.max(0, _replay_get_value(2) - 24 * seconds);
-	_replay_set_value(3, frame);
+	set_replay_location(frame);
 }
 
 function play_faster() {
@@ -413,46 +500,49 @@ function set_map_name(name) {
 
 function set_color(player, color) {
 		
-	var hex_color;
+	var rgb_color;
 	switch(color) {
 	case 0:
-		hex_color = "#f40404";
+		rgb_color = "rgba(244, 4, 4, 1)";
 		break;
 	case 1:
-		hex_color = "#0c48cc";
+		rgb_color = "rgba(12, 72, 204, 1)";
 		break;
 	case 2:
-		hex_color = "#2cb494";
+		rgb_color = "rgba(44, 180, 148, 1)";
 		break;
 	case 3:
-		hex_color = "#88409c";
+		rgb_color = "rgba(136, 64, 156, 1)";
 		break;
 	case 4:
-		hex_color = "#f88c14";
+		rgb_color = "rgba(248, 140, 20, 1)";
 		break;
 	case 5:
-		hex_color = "#703014";
+		rgb_color = "rgba(112, 48, 20, 1)";
 		break;
 	case 6:
-		hex_color = "#cce0d0";
+		rgb_color = "rgba(204, 224, 208, 1)";
 		break;
 	case 7:
-		hex_color = "#fcfc38";
+		rgb_color = "rgba(252, 252, 56, 1)";
 		break;
 	case 8:
-		hex_color = "#088008";
+		rgb_color = "rgba(8, 128, 8, 1)";
 		break;
 	case 9:
-		hex_color = "#fcfc7c";
+		rgb_color = "rgba(252, 252, 124, 1)";
 		break;
 	case 10:
-		hex_color = "#ecc4b0";
+		rgb_color = "rgba(236, 196, 176, 1)";
 		break;
 	case 11:
-		hex_color = "#4068d4";
+		rgb_color = "rgba(64, 104, 212, 1)";
 		break;
 	}
-	$('.player_color' + player).css('border-color', hex_color);
+	infoChart.data.datasets[(player-1) * 2].borderColor = rgb_color;
+	infoChart.data.datasets[(player-1) * 2 + 1].borderColor = rgb_color;
+	infoChart.data.datasets[(player-1) * 2 + 1].backgroundColor = rgb_color.replace(/[\d\.]+\)$/g, '0.1)');
+	$('.player_color' + player).css('border-color', rgb_color);
 }
 
 function set_nick(player, nick) {

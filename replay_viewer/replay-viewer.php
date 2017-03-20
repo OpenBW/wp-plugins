@@ -23,63 +23,81 @@ class Replay_Viewer_Widget extends WP_Widget {
 		
 	}
 
+	private function add_graphs() {
+		?>
+		<aside draggable="true" id="graphs_tab" class="info_tab">
+			<ul class="tabs" data-tabs id="graphs-tabs">
+				<li class="tabs-title is-active"><a id="graphs_link1" href="#graph_tab_panel1"
+					aria-selected="true">Floating Resources</a></li>
+				<!-- <li class="tabs-title"><a id="graphs_link2" href="#graph_tab_panel2">Unused</a></li>
+				 -->
+			</ul>
+			<div class="tabs-content" data-tabs-content="graphs-tabs">
+				<div class="tabs-panel is-active" id="graphs_tab_panel1">
+					<canvas id="infoChartCanvas"></canvas>
+				</div>
+			</div> 
+		</aside>
+		<?php
+	}
+		
 	private function add_info_tab() {
 	
 		?>
 		<aside draggable="true" id="info_tab" class="info_tab">
-				<ul class="tabs" data-tabs id="info-tabs">
-					<li class="tabs-title is-active"><a id="tab_link1" href="#info_tab_panel1"
-						aria-selected="true">Production</a></li>
-					<li class="tabs-title"><a id="tab_link2" href="#info_tab_panel2">Army</a></li>
-					<li class="tabs-title"><a id="tab_link3" href="#info_tab_panel3">Upgrades</a></li>
-					<li class="tabs-title"><a id="tab_link4" href="#info_tab_panel4">Research</a></li>
-				</ul>
-				<div class="tabs-content" data-tabs-content="info-tabs">
-					<div class="tabs-panel is-active" id="info_tab_panel1">
-						<div>
-							<div class="info_tab_player_color player_color1"></div>
-							<div id="production_tab_content1" class="info_tab_content">
-							<?php 
-							for ($i = 0; $i < 100; $i++) { 
-								echo '<div><img src=""/><div class="prod_prog_bar"></div></div>';
-							}
-							?>
-							</div>
-						</div>
-						<div>
-							<div class="info_tab_player_color player_color2"></div>
-							<div id="production_tab_content2" class="info_tab_content">
-							<?php 
-							for ($i = 0; $i < 100; $i++) { 
-								echo '<div><img src=""/><div class="prod_prog_bar"></div></div>';
-							}
-							?>
-							</div>
+			<ul class="tabs" data-tabs id="info-tabs">
+				<li class="tabs-title is-active"><a id="tab_link1" href="#info_tab_panel1"
+					aria-selected="true">Production</a></li>
+				<li class="tabs-title"><a id="tab_link2" href="#info_tab_panel2">Army</a></li>
+				<li class="tabs-title"><a id="tab_link3" href="#info_tab_panel3">Upgrades</a></li>
+				<li class="tabs-title"><a id="tab_link4" href="#info_tab_panel4">Research</a></li>
+			</ul>
+			<div class="tabs-content" data-tabs-content="info-tabs">
+				<div class="tabs-panel is-active" id="info_tab_panel1">
+					<div>
+						<div class="info_tab_player_color player_color1"></div>
+						<div id="production_tab_content1" class="info_tab_content">
+						<?php 
+						for ($i = 0; $i < 100; $i++) { 
+							echo '<div><img src=""/><div class="prod_prog_bar"></div></div>';
+						}
+						?>
 						</div>
 					</div>
-					<div class="tabs-panel" id="info_tab_panel2">
-						<div>
-							<div class="info_tab_player_color player_color1"></div>
-							<div id="army_tab_content1" class="info_tab_content">
-							<?php 
-							for ($i = 0; $i < 20; $i++) { 
-								echo '<div><img src=""/><div class="army_counter_bar"></div></div>';
-							}
-							?>
-							</div>
-						</div>
-						<div>
-							<div class="info_tab_player_color player_color2"></div>
-							<div id="army_tab_content2" class="info_tab_content">
-							<?php 
-							for ($i = 0; $i < 20; $i++) { 
-								echo '<div><img src=""/><div class="army_counter_bar"></div></div>';
-							}
-							?>
-							</div>
+					<div>
+						<div class="info_tab_player_color player_color2"></div>
+						<div id="production_tab_content2" class="info_tab_content">
+						<?php 
+						for ($i = 0; $i < 100; $i++) { 
+							echo '<div><img src=""/><div class="prod_prog_bar"></div></div>';
+						}
+						?>
 						</div>
 					</div>
-					<div class="tabs-panel" id="info_tab_panel3">
+				</div>
+				<div class="tabs-panel" id="info_tab_panel2">
+					<div>
+						<div class="info_tab_player_color player_color1"></div>
+						<div id="army_tab_content1" class="info_tab_content">
+						<?php 
+						for ($i = 0; $i < 20; $i++) { 
+							echo '<div><img src=""/><div class="army_counter_bar"></div></div>';
+						}
+						?>
+						</div>
+					</div>
+					<div>
+						<div class="info_tab_player_color player_color2"></div>
+						<div id="army_tab_content2" class="info_tab_content">
+						<?php 
+						for ($i = 0; $i < 20; $i++) { 
+							echo '<div><img src=""/><div class="army_counter_bar"></div></div>';
+						}
+						?>
+						</div>
+					</div>
+				</div>
+				<div class="tabs-panel" id="info_tab_panel3">
 					<div>
 						<div class="info_tab_player_color player_color1"></div>
 						<div id="upgrade_tab_content1" class="info_tab_content">
@@ -123,7 +141,7 @@ class Replay_Viewer_Widget extends WP_Widget {
 						</div>
 					</div>
 				</div>
-		   </div> 
+			</div> 
 		</aside>
 		<?php
 	}
@@ -132,6 +150,9 @@ class Replay_Viewer_Widget extends WP_Widget {
 	 * Display the main content
 	 */
 	public function show_viewer_ui() {
+		
+		wp_register_script( 'chartjs','https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js', '2.5.0', true);
+		wp_enqueue_script( 'chartjs' );
 		
 		wp_register_script( 'info-bar', WP_PLUGIN_URL.'/replay_viewer/info-bar.js', array('jquery'), '1.0.1', true);
 		wp_enqueue_script( 'info-bar' );
@@ -164,6 +185,7 @@ class Replay_Viewer_Widget extends WP_Widget {
 			<canvas class="emscripten" id="canvas"
 				oncontextmenu="event.preventDefault()"></canvas>
 				<?php $this->add_info_tab() ?>
+				<?php $this->add_graphs() ?>
 		</div>
 		<div class="expanded row align-justify infobar-container">
 			<div id="infobar" class="column infobar">

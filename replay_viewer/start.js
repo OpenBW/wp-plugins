@@ -89,7 +89,7 @@ jQuery(document).ready( function($) {
 	$('#play_demo_button').on('click', function(e){
 		
 		if (has_all_files()) {
-			load_replay_url("/bw/flash_vs_jaedong.rep");
+			load_replay_url("../bw/SlayerMN_Weakinside.rep");
 		}
 	});
 	
@@ -122,6 +122,33 @@ function initialize_canvas(canvas) {
 	}
 }
 
+var resource_count = [[],[],[],[],[]];
+
+function set_replay_location(frame) {
+	
+//	resource_count[0].length = Math.round(frame / 8);
+//	resource_count[1].length = Math.round(frame / 8);
+//	resource_count[2].length = Math.round(frame / 8);
+//	resource_count[3].length = Math.round(frame / 8);
+//	resource_count[4].length = Math.round(frame / 8);
+	_replay_set_value(3, frame);
+}
+
+function update_graphs(frame) {
+	
+	if ($('#graphs_tab').is(":visible")) {
+		if ($('#graphs_tab_panel1').hasClass("is-active")) {
+			var arrayIndex = Math.round(frame / 16);
+
+			infoChart.data.labels = resource_count[4].slice(0, arrayIndex);
+			infoChart.data.datasets[0].data = resource_count[0].slice(0, arrayIndex);
+			infoChart.data.datasets[1].data = resource_count[1].slice(0, arrayIndex);
+			infoChart.data.datasets[2].data = resource_count[2].slice(0, arrayIndex);
+			infoChart.data.datasets[3].data = resource_count[3].slice(0, arrayIndex);
+			infoChart.update();
+		}
+	}
+}
 
 /**
  * updates values for the replay viewer info tab (production, army, killed units, etc.).
@@ -153,11 +180,17 @@ function update_info_tab() {
 /**
  * updates values for the replay viewer info bar
  */
-function update_info_bar() {
+function update_info_bar(frame) {
 	
 	update_handle_position(_replay_get_value(6) * 200);
     update_timer(_replay_get_value(2));
     update_speed(_replay_get_value(0));
+    
+    var array_index = Math.round(frame / 16);
+    if (array_index >= resource_count[4].length) {
+    	resource_count[4].length = array_index + 1;
+    }
+    resource_count[4][array_index] = _replay_get_value(2);
     
     for (var i = 0; i < 2; ++i) { // currently hard-coded for 1v1 games (2 active players)
         
@@ -165,19 +198,32 @@ function update_info_bar() {
         var used_supply 		= _player_get_value(players[i], C_USED_ZERG_SUPPLY + race);
         var available_supply 	= _player_get_value(players[i], C_AVAILABLE_ZERG_SUPPLY + race);
         
+        var minerals			= _player_get_value(players[i], C_CURRENT_MINERALS);
+        var gas 				= _player_get_value(players[i], C_CURRENT_GAS);
         
-        set_map_name(Pointer_stringify(_replay_get_value(5)));
-        set_nick(		i + 1, Pointer_stringify(_player_get_value(players[i], C_NICK)));
-        set_color(		i + 1, _player_get_value(players[i], C_COLOR));
-        set_race(		i + 1, race);
+        if (array_index >= resource_count[4].length) {
+	        resource_count[i * 2].length = array_index + 1;
+	        resource_count[i * 2 + 1].length = array_index + 1;
+        }
+        resource_count[i * 2][array_index] = minerals;
+        resource_count[i * 2 + 1][array_index] = gas;
+        
+        if (!first_frame_played) {
+	        set_map_name(Pointer_stringify(_replay_get_value(5)));
+	        set_nick(		i + 1, Pointer_stringify(_player_get_value(players[i], C_NICK)));
+	        set_color(		i + 1, _player_get_value(players[i], C_COLOR));
+	        set_race(		i + 1, race);
+        }
         
     	set_supply(		i + 1, used_supply + " / " + available_supply);
-        set_minerals(	i + 1, _player_get_value(players[i], C_CURRENT_MINERALS));
-        set_gas(		i + 1, _player_get_value(players[i], C_CURRENT_GAS));
+        set_minerals(	i + 1, minerals);
+        set_gas(		i + 1, gas);
         set_workers(	i + 1, _player_get_value(players[i], C_CURRENT_WORKERS));
         set_army(		i + 1, _player_get_value(players[i], C_CURRENT_ARMY_SIZE));
     	set_apm(		i + 1, _player_get_value(players[i], C_APM));
     }
+
+    first_frame_played = true;
 }
 
 /*****************************
@@ -289,6 +335,10 @@ function resize_canvas(canvas) {
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     _ui_resize(canvas.parentElement.clientWidth, canvas.parentElement.clientHeight);
+
+	var ctx = document.getElementById("graphs_tab");
+	ctx.style.width = "70%";
+	ctx.style.height = "70%";
 }
 
 function js_fatal_error(ptr) {
@@ -354,11 +404,13 @@ function js_pre_main_loop() {
 
 var loop_counter = 0;
 function js_post_main_loop() {
-
-	if (Math.abs(_replay_get_value(2) - loop_counter) >= 8) {
-	    update_info_bar();
+	
+	var frame = _replay_get_value(2);
+	if (Math.abs(frame - loop_counter) >= 8) {
+	    update_info_bar(frame);
 	    update_info_tab();
-	    loop_counter = _replay_get_value(2);
+	    update_graphs(frame);
+	    loop_counter = frame;
 	}
 }
 
@@ -509,6 +561,8 @@ function load_replay_url(url) {
     req.send();
 }
 
+var first_frame_played = false;
+
 function start_replay(buffer, length) {
 	
 	$('#top').css('display', 'none');
@@ -524,6 +578,8 @@ function start_replay(buffer, length) {
     
     _load_replay(buffer, length);
     
+    first_frame_played = false;
+    
     players = [];
     for (var i = 0; i != 12; ++i) {
         if (_player_get_value(i, C_PLAYER_ACTIVE)) {
@@ -532,7 +588,8 @@ function start_replay(buffer, length) {
 	        var used_supply 		= _player_get_value(i, C_USED_ZERG_SUPPLY + race);
 	        var available_supply 	= _player_get_value(i, C_AVAILABLE_ZERG_SUPPLY + race);
 	        
-	        if (used_supply + available_supply > 0) {
+	        if (used_supply == 4 && available_supply > 0 && players.length < 2) {
+	        	console.log(used_supply + " / " + available_supply)
 	        	players.push(i);
 	        }
         }

@@ -28,7 +28,7 @@ class Replay_Viewer_Widget extends WP_Widget {
 		<aside draggable="true" id="graphs_tab" class="info_tab">
 			<ul class="tabs" data-tabs id="graphs-tabs">
 				<li class="tabs-title is-active"><a id="graphs_link1" href="#graph_tab_panel1"
-					aria-selected="true">Floating Resources</a></li>
+					aria-selected="true">Resources</a></li>
 				<!-- <li class="tabs-title"><a id="graphs_link2" href="#graph_tab_panel2">Unused</a></li>
 				 -->
 			</ul>

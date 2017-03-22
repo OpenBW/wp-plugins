@@ -11,30 +11,65 @@ jQuery(document).ready( function($) {
 	            data: [50],
 	            pointRadius: 0,
 	            lineTension: 0,
-	            borderWidth: 1
-	        },
-	        {
+	            borderWidth: 1,
+	            borderColor: '#54b9b1'
+	        }, {
 	            label: 'gas 1',
 	            data: [0],
 	            pointRadius: 0,
 	            lineTension: 0,
-	            borderDash: [2, 2],
-	            borderWidth: 1
-	        },
-	        {
+	            borderWidth: 1,
+	            borderColor: '#6ed279'
+	        }, {
+	            label: 'workers 1',
+	            data: [0],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderWidth: 1,
+	            borderColor: '#e6fb73',
+	            hidden: true
+	        }, {
+	            label: 'army size 1',
+	            data: [0],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderWidth: 1,
+	            borderColor: '#b07042',
+	            hidden: true
+	        }, {
 	            label: 'minerals 2',
 	            data: [0],
 	            pointRadius: 0,
 	            lineTension: 0,
-	            borderWidth: 1
-	        },
-	        {
+	            borderDash: [2, 2],
+	            borderWidth: 1,
+	            borderColor: '#54b9b1'
+	        }, {
 	            label: 'gas 2',
 	            data: [0],
 	            pointRadius: 0,
 	            lineTension: 0,
 	            borderDash: [2, 2],
-	            borderWidth: 1
+	            borderWidth: 1,
+	            borderColor: '#6ed279'
+	        }, {
+	            label: 'workers 2',
+	            data: [0],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderDash: [2, 2],
+	            borderWidth: 1,
+	            borderColor: '#e6fb73',
+	            hidden: true
+	        }, {
+	            label: 'army size 2',
+	            data: [0],
+	            pointRadius: 0,
+	            lineTension: 0,
+	            borderDash: [2, 2],
+	            borderWidth: 1,
+	            borderColor: '#b07042',
+	            hidden: true
 	        }
 	        ]
 	    },
@@ -103,9 +138,6 @@ jQuery(document).ready( function($) {
 			 break;
 		 case 53: // 5
 			 toggle_graphs(1);
-			 break;
-		 case 48: // 0
-			 $('#debug_tab').toggle();
 			 break;
 		 }
 	});
@@ -192,7 +224,6 @@ jQuery(document).ready( function($) {
 	
 	document.getElementById('info_tab').addEventListener('dragstart',drag_start,false);
 	document.getElementById('graphs_tab').addEventListener('dragstart',drag_start,false);
-	document.getElementById('debug_tab').addEventListener('dragstart',drag_start,false);
 	document.getElementById("canvas").addEventListener('drop', drop, false);
 	update_army_tab([]);
 	$('#volume-slider-wrapper').css("display", "none");
@@ -238,7 +269,7 @@ function toggle_info_tab(tab_nr) {
 function jump_back(seconds) {
 	
 	var frame = Math.max(0, _replay_get_value(2) - 24 * seconds);
-	set_replay_location(frame);
+	_replay_set_value(3, frame);
 }
 
 function play_faster() {
@@ -285,12 +316,14 @@ function update_speed(speed) {
 	document.getElementById("rv-rc-speed").innerHTML = "speed: " + speed + "x";
 }
 
+var IMG_URL1 = "http://www.openbw.com/bw/production_icons/icon ";
+var IMG_URL2 = ".bmp";
 function set_icon(tab_nr, parent_element, child_nr, icon_id, percentage, info) {
 	
 	if (icon_id < 10) icon_id = "0" + icon_id;
 	if (icon_id < 100) icon_id = "0" + icon_id;
 	
-	var img_src = "http://www.openbw.com/bw/production_icons/hd/icon " + icon_id + ".png";
+	var img_src = IMG_URL1 + icon_id + IMG_URL2;
 	var element = parent_element.children("div").eq(child_nr);
 	var img_element = element.children("img");
 	
@@ -539,9 +572,12 @@ function set_color(player, color) {
 		rgb_color = "rgba(64, 104, 212, 1)";
 		break;
 	}
-	infoChart.data.datasets[(player-1) * 2].borderColor = rgb_color;
-	infoChart.data.datasets[(player-1) * 2 + 1].borderColor = rgb_color;
-	infoChart.data.datasets[(player-1) * 2 + 1].backgroundColor = rgb_color.replace(/[\d\.]+\)$/g, '0.1)');
+	// infoChart.data.datasets[(player-1) * 4].borderColor = rgb_color;
+	// infoChart.data.datasets[(player-1) * 4 + 1].borderColor = rgb_color;
+	// infoChart.data.datasets[(player-1) * 4 + 1].backgroundColor = rgb_color.replace(/[\d\.]+\)$/g, '0.1)');
+	// infoChart.data.datasets[(player-1) * 4 + 2].borderColor = rgb_color;
+	// infoChart.data.datasets[(player-1) * 4 + 3].borderColor = rgb_color;
+	
 	$('.player_color' + player).css('border-color', rgb_color);
 }
 
@@ -590,16 +626,5 @@ function set_race(player, race) {
 
 function set_apm(player, apm) {
 	document.getElementById("apm" + player).innerHTML = apm;
-}
-
-// var debug_unit_id = null;
-function create_unit(unit_type) {
-	
-	// TODO insert call to test.js here: 
-	// if (debug_unit_id != null) {
-	// 		kill_unit(debug_unit_id);
-	// }
-	// debug_unit_id = create_unit(unit_type, pos_x, pos_y);
-	console.log('created unit type ' + unit_type);
 }
 

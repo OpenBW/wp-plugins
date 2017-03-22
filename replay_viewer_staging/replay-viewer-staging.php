@@ -63,7 +63,7 @@ class Replay_Viewer_Staging extends WP_Widget {
 		<aside draggable="true" id="graphs_tab" class="info_tab">
 			<ul class="tabs" data-tabs id="graphs-tabs">
 				<li class="tabs-title is-active"><a id="graphs_link1" href="#graph_tab_panel1"
-					aria-selected="true">Floating Resources</a></li>
+					aria-selected="true">Resources</a></li>
 				<!-- <li class="tabs-title"><a id="graphs_link2" href="#graph_tab_panel2">Unused</a></li>
 				 -->
 			</ul>
@@ -189,13 +189,16 @@ class Replay_Viewer_Staging extends WP_Widget {
 		wp_register_script( 'chartjs','https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js', '2.5.0', true);
 		wp_enqueue_script( 'chartjs' );
 		
-		wp_register_script( 'info-bar-staging', WP_PLUGIN_URL.'/replay_viewer_staging/info-bar.js', array('jquery'), '1.0.1', true);
+		wp_register_script( 'info-bar-staging', WP_PLUGIN_URL.'/replay_viewer_staging/info-bar.js', array('jquery'), '1.0.2', true);
 		wp_enqueue_script( 'info-bar-staging' );
 		
-		wp_register_script( 'start-staging', WP_PLUGIN_URL.'/replay_viewer_staging/start.js', array('info-bar-staging'), '1.0.1', true);
+		wp_register_script( 'staging', WP_PLUGIN_URL.'/replay_viewer_staging/staging.js', array('info-bar-staging'), '1.0.2', true);
+		wp_enqueue_script( 'staging' );
+		
+		wp_register_script( 'start-staging', WP_PLUGIN_URL.'/replay_viewer_staging/start.js', array('info-bar-staging'), '1.0.2', true);
 		wp_enqueue_script( 'start-staging' );
 		
-		wp_register_script( 'test-staging', WP_PLUGIN_URL.'/replay_viewer_staging/test.js', array('start-staging'), '1.0.1', true);
+		wp_register_script( 'test-staging', WP_PLUGIN_URL.'/replay_viewer_staging/test.js', array('start-staging'), '1.0.2', true);
 		wp_enqueue_script( 'test-staging' );
 		
 		$rep_url = $_GET['rep'];

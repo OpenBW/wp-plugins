@@ -86,10 +86,7 @@ class Sscait_Widget extends WP_Widget {
 							?>
 							<tr>
 								<td><input class="checkbox" id="<?php echo $entry["name"]?>" type="checkbox">
-									<a data-toggle="name-dropdown<?php echo $entry_counter?>"><?php echo $entry["name"]?></a>
-									<div class="dropdown-pane" id="name-dropdown<?php echo $entry_counter?>" data-dropdown>
-									  <?php echo $entry["description"]?>
-									</div>
+									<a href="<?php echo $entry["botProfileURL"]?>"><?php echo $entry["name"]?></a>
 								</td>
 								<td><?php echo $entry["race"]?></td>
 								<td><?php echo $entry["wins"]?></td>

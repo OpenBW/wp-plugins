@@ -45,14 +45,14 @@ class Sscait_Widget extends WP_Widget {
 				'ajax_url' 			=> admin_url( 'admin-ajax.php' )
 		) );
 		
-		$playerlist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/bots.php",
+		$playerlist = Unirest\Request::get("https://sscaitournament.com/api/bots.php",
 				array(
 						"X-Mashape-Key" => SSCAIT_KEY,
 						"Accept" => "application/json"
 				)
 				);
 		
-		$gamelist = Unirest\Request::get("https://certicky-sscait-student-starcraft-ai-tournament-v1.p.mashape.com/api/games.php?future=false&count=200",
+		$gamelist = Unirest\Request::get("https://sscaitournament.com/api/games.php?future=false&count=200",
 				array(
 						"X-Mashape-Key" => SSCAIT_KEY,
 						"Accept" => "application/json"

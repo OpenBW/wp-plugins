@@ -89,92 +89,60 @@ class Replay_Viewer_Staging extends WP_Widget {
 			</ul>
 			<div class="tabs-content" data-tabs-content="info-tabs">
 				<div class="tabs-panel is-active" id="info_tab_panel1">
-					<div>
-						<div class="info_tab_player_color player_color1"></div>
-						<div id="production_tab_content1" class="info_tab_content">
+					<?php for ($i = 1; $i < 9; $i++) { ?>
+					<div class="per-player-info<?php echo $i?>" style="display:none">
+						<div class="info_tab_player_color player_color<?php echo $i?>"></div>
+						<div id="production_tab_content<?php echo $i?>" class="info_tab_content">
 						<?php 
-						for ($i = 0; $i < 100; $i++) { 
+						for ($j = 0; $j < 100; $j++) {
 							echo '<div><img src=""/><div class="prod_prog_bar"></div></div>';
 						}
 						?>
 						</div>
 					</div>
-					<div>
-						<div class="info_tab_player_color player_color2"></div>
-						<div id="production_tab_content2" class="info_tab_content">
-						<?php 
-						for ($i = 0; $i < 100; $i++) { 
-							echo '<div><img src=""/><div class="prod_prog_bar"></div></div>';
-						}
-						?>
-						</div>
-					</div>
+					<?php }?>
 				</div>
 				<div class="tabs-panel" id="info_tab_panel2">
-					<div>
-						<div class="info_tab_player_color player_color1"></div>
-						<div id="army_tab_content1" class="info_tab_content">
+					<?php for ($i = 1; $i < 9; $i++) { ?>
+					<div class="per-player-info<?php echo $i?>" style="display:none">
+						<div class="info_tab_player_color player_color<?php echo $i?>"></div>
+						<div id="army_tab_content<?php echo $i?>" class="info_tab_content">
 						<?php 
-						for ($i = 0; $i < 20; $i++) { 
+						for ($j = 0; $j < 20; $j++) {
 							echo '<div><img src=""/><div class="army_counter_bar"></div></div>';
 						}
 						?>
 						</div>
 					</div>
-					<div>
-						<div class="info_tab_player_color player_color2"></div>
-						<div id="army_tab_content2" class="info_tab_content">
-						<?php 
-						for ($i = 0; $i < 20; $i++) { 
-							echo '<div><img src=""/><div class="army_counter_bar"></div></div>';
-						}
-						?>
-						</div>
-					</div>
+					<?php }?>
 				</div>
 				<div class="tabs-panel" id="info_tab_panel3">
-					<div>
-						<div class="info_tab_player_color player_color1"></div>
-						<div id="upgrade_tab_content1" class="info_tab_content">
+					<?php for ($i = 1; $i < 9; $i++) { ?>
+					<div class="per-player-info<?php echo $i?>" style="display:none">
+						<div class="info_tab_player_color player_color<?php echo $i?>"></div>
+						<div id="upgrade_tab_content<?php echo $i?>" class="info_tab_content">
 						<?php 
-						for ($i = 0; $i < 20; $i++) { 
+						for ($j = 0; $j < 20; $j++) {
 							echo '<div><img src=""/><span></span><div class="prod_prog_bar"></div></div>';
 						}
 						?>
 						</div>
 					</div>
-					<div>
-						<div class="info_tab_player_color player_color2"></div>
-						<div id="upgrade_tab_content2" class="info_tab_content">
-						<?php 
-						for ($i = 0; $i < 20; $i++) { 
-							echo '<div><img src=""><span></span><div class="prod_prog_bar"></div></div>';
-						}
-						?>
-						</div>
-					</div>
+					<?php }?>
 				</div>
 				<div class="tabs-panel" id="info_tab_panel4">
-					<div>
-						<div class="info_tab_player_color player_color1"></div>
-						<div id="research_tab_content1" class="info_tab_content">
+					<?php for ($i = 1; $i < 9; $i++) { ?>
+					<div class="per-player-info<?php echo $i?>" style="display:none">
+						<div class="info_tab_player_color player_color<?php echo $i?>"></div>
+						<div id="research_tab_content<?php echo $i?>" class="info_tab_content">
 						<?php 
-						for ($i = 0; $i < 20; $i++) { 
+						for ($j = 0; $j < 20; $j++) {
 							echo '<div><img src=""/><div class="prod_prog_bar"></div></div>';
 						}
 						?>
 						</div>
 					</div>
-					<div>
-						<div class="info_tab_player_color player_color2"></div>
-						<div id="research_tab_content2" class="info_tab_content">
-						<?php 
-						for ($i = 0; $i < 20; $i++) { 
-							echo '<div><img src=""><div class="prod_prog_bar"></div></div>';
-						}
-						?>
-						</div>
-					</div>
+					<?php }?>
 				</div>
 			</div> 
 		</aside>
@@ -228,17 +196,7 @@ class Replay_Viewer_Staging extends WP_Widget {
 		</div>
 		<div class="expanded row align-justify infobar-container">
 			<div id="infobar" class="column infobar">
-				<div class="row infobar-player">
-					<div class="small-1 columns rv_ib_race" id="race1">&nbsp;</div>
-					<div class="small-3 columns rv_ib_nick player_color1" id="nick1">-</div>
-					<div class="small-2 columns rv_ib_supply" id="supply1">-</div>
-					<div class="small-1 columns rv_ib_minerals" id="minerals1">-</div>
-					<div class="small-1 columns rv_ib_gas" id="gas1">-</div>
-					<div class="small-1 columns rv_ib_worker" id="workers1">-</div>
-					<div class="small-1 columns rv_ib_army" id="army1">-</div>
-					<div class="small-2 columns rv_ib_apm" id="apm1">-</div>
-				</div>
-				<div class="row infobar-text">
+				<div class="row infobar-text 5player" style="display:none">
 					<div class="small-1 columns rv_ib_race" id="map_label">&nbsp;</div>
 					<div class="small-3 columns rv_ib_nick" id="map">&nbsp;</div>
 					<div class="small-2 columns rv_ib_supply">SUPPLY</div>
@@ -248,16 +206,39 @@ class Replay_Viewer_Staging extends WP_Widget {
 					<div class="small-1 columns rv_ib_army">ARMY</div>
 					<div class="small-2 columns rv_ib_apm">APM</div>
 				</div>
-				<div class="row infobar-player">
-					<div class="small-1 columns rv_ib_race" id="race2">&nbsp;</div>
-					<div class="small-3 columns rv_ib_nick player_color2" id="nick2">-</div>
-					<div class="small-2 columns rv_ib_supply" id="supply2">-</div>
-					<div class="small-1 columns rv_ib_minerals" id="minerals2">-</div>
-					<div class="small-1 columns rv_ib_gas" id="gas2">-</div>
-					<div class="small-1 columns rv_ib_worker" id="workers2">-</div>
-					<div class="small-1 columns rv_ib_army" id="army2">-</div>
-					<div class="small-2 columns rv_ib_apm" id="apm2">-</div>
+				<div class="row infobar-player" id="infobar_row_player1">
+					<div class="small-1 columns rv_ib_race" id="race1">&nbsp;</div>
+					<div class="small-3 columns rv_ib_nick player_color1" id="nick1">-</div>
+					<div class="small-2 columns rv_ib_supply" id="supply1">-</div>
+					<div class="small-1 columns rv_ib_minerals" id="minerals1">-</div>
+					<div class="small-1 columns rv_ib_gas" id="gas1">-</div>
+					<div class="small-1 columns rv_ib_worker" id="workers1">-</div>
+					<div class="small-1 columns rv_ib_army" id="army1">-</div>
+					<div class="small-2 columns rv_ib_apm" id="apm1">-</div>
 				</div>
+				<div class="row infobar-text 2player">
+					<div class="small-1 columns rv_ib_race" id="map_label">&nbsp;</div>
+					<div class="small-3 columns rv_ib_nick" id="map">&nbsp;</div>
+					<div class="small-2 columns rv_ib_supply">SUPPLY</div>
+					<div class="small-1 columns rv_ib_minerals">MINERALS</div>
+					<div class="small-1 columns rv_ib_gas">GAS</div>
+					<div class="small-1 columns rv_ib_worker">WORKERS</div>
+					<div class="small-1 columns rv_ib_army">ARMY</div>
+					<div class="small-2 columns rv_ib_apm">APM</div>
+				</div>
+				<?php for ($i = 2; $i < 9; $i++) { ?>
+					<div class="row infobar-player per-player-info<?php echo $i?>" style="display:none">
+						<div class="small-1 columns rv_ib_race" id="race<?php echo $i?>">&nbsp;</div>
+						<div class="small-3 columns rv_ib_nick player_color<?php echo $i?>" id="nick<?php echo $i?>">-</div>
+						<div class="small-2 columns rv_ib_supply" id="supply<?php echo $i?>">-</div>
+						<div class="small-1 columns rv_ib_minerals" id="minerals<?php echo $i?>">-</div>
+						<div class="small-1 columns rv_ib_gas" id="gas<?php echo $i?>">-</div>
+						<div class="small-1 columns rv_ib_worker" id="workers<?php echo $i?>">-</div>
+						<div class="small-1 columns rv_ib_army" id="army<?php echo $i?>">-</div>
+						<div class="small-2 columns rv_ib_apm" id="apm<?php echo $i?>">-</div>
+					</div>
+				
+				<?php } ?>
 			</div>
 			
 			<div class="shrink column replay-control">

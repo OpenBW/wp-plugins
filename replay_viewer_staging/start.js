@@ -122,7 +122,7 @@ function initialize_canvas(canvas) {
 	}
 }
 
-var resource_count = [[],[],[],[],[],[],[],[],[]];
+var resource_count = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
 
 function update_graphs(frame) {
 	
@@ -159,13 +159,17 @@ function update_info_tab() {
 			update_army_tab(funcs.get_all_completed_units());
 		} else if ($('#info_tab_panel3').hasClass("is-active")) {
 			
-			var upgrades = [[players[0], funcs.get_completed_upgrades(players[0]), funcs.get_incomplete_upgrades(players[0])],
-							[players[1], funcs.get_completed_upgrades(players[1]), funcs.get_incomplete_upgrades(players[1])]];
+			var upgrades = [];
+			for (var i = 0; i < players.length; i++) {
+				upgrades.push([players[i], funcs.get_completed_upgrades(players[i]), funcs.get_incomplete_upgrades(players[i])]);
+			}
 			update_upgrades_tab(upgrades);
 		} else if ($('#info_tab_panel4').hasClass("is-active")) {
 			
-			var researches = [[players[0], funcs.get_completed_research(players[0]), funcs.get_incomplete_research(players[0])],
-							  [players[1], funcs.get_completed_research(players[1]), funcs.get_incomplete_research(players[1])]];
+			var researches = [];
+			for (var i = 0; i < players.length; i++) {
+				researches.push([players[0], funcs.get_completed_research(players[0]), funcs.get_incomplete_research(players[0])]);
+			}
 			update_research_tab(researches);
 		}
 	}
@@ -186,7 +190,7 @@ function update_info_bar(frame) {
     }
     resource_count[0][array_index] = _replay_get_value(2);
     
-    for (var i = 0; i < 2; ++i) { // currently hard-coded for 1v1 games (2 active players)
+    for (var i = 0; i < players.length; ++i) {
         
         var race 				= _player_get_value(players[i], C_RACE)
         var used_supply 		= _player_get_value(players[i], C_USED_ZERG_SUPPLY + race);
@@ -582,18 +586,31 @@ function start_replay(buffer, length) {
     
     players = [];
     for (var i = 0; i != 12; ++i) {
+    	
         if (_player_get_value(i, C_PLAYER_ACTIVE)) {
         
 	        var race 				= _player_get_value(i, C_RACE)
 	        var used_supply 		= _player_get_value(i, C_USED_ZERG_SUPPLY + race);
 	        var available_supply 	= _player_get_value(i, C_AVAILABLE_ZERG_SUPPLY + race);
 	        
-	        if (used_supply == 4 && available_supply > 0 && players.length < 2) {
+	        if (used_supply == 4 && available_supply > 0) {
 	        	console.log(used_supply + " / " + available_supply)
 	        	players.push(i);
+	        	$('.per-player-info' + players.length).show();
 	        }
         }
-
+    }
+    for (var i = players.length + 1; i <= 12; i++) {
+    	$('.per-player-info' + i).hide();
+    }
+    if (players.length > 4) {
+    	$('.2player').hide();
+    	$('.5player').show();
+    	$('.infobar-player div').css("padding", "0px 5px 0px 5px");
+    } else {
+    	$('.2player').show();
+    	$('.5player').hide();
+    	$('.infobar-player div').css("padding", "5px 5px 5px 5px");
     }
 }
 

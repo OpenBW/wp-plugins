@@ -168,7 +168,7 @@ function update_info_tab() {
 			
 			var researches = [];
 			for (var i = 0; i < players.length; i++) {
-				researches.push([players[0], funcs.get_completed_research(players[0]), funcs.get_incomplete_research(players[0])]);
+				researches.push([players[i], funcs.get_completed_research(players[i]), funcs.get_incomplete_research(players[i])]);
 			}
 			update_research_tab(researches);
 		}

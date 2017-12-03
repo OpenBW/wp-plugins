@@ -528,7 +528,8 @@ function update_handle_position(value) {
 }
 
 function set_map_name(name) {
-	document.getElementById("map").innerHTML = name;
+	document.getElementById("map1").innerHTML = name;
+	document.getElementById("map2").innerHTML = name;
 }
 
 function set_color(player, color) {

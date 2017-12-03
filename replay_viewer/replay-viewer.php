@@ -122,13 +122,13 @@ class Replay_Viewer_Widget extends WP_Widget {
 		wp_register_script( 'chartjs','https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js', '2.5.0', true);
 		wp_enqueue_script( 'chartjs' );
 		
-		wp_register_script( 'info-bar', WP_PLUGIN_URL.'/replay_viewer/info-bar.js', array('jquery'), '1.0.1', true);
+		wp_register_script( 'info-bar', WP_PLUGIN_URL.'/replay_viewer/info-bar.js', array('jquery'), '1.0.4', true);
 		wp_enqueue_script( 'info-bar' );
 		
-		wp_register_script( 'start', WP_PLUGIN_URL.'/replay_viewer/start.js', array('info-bar'), '1.0.1', true);
+		wp_register_script( 'start', WP_PLUGIN_URL.'/replay_viewer/start.js', array('info-bar'), '1.0.4', true);
 		wp_enqueue_script( 'start' );
 		
-		wp_register_script( 'test', WP_PLUGIN_URL.'/replay_viewer/test.js', array('start'), '1.0.1', true);
+		wp_register_script( 'test', WP_PLUGIN_URL.'/replay_viewer/test.js', array('start'), '1.0.3', true);
 		wp_enqueue_script( 'test' );
 		
 		$rep_url = $_GET['rep'];
@@ -158,8 +158,8 @@ class Replay_Viewer_Widget extends WP_Widget {
 		<div class="expanded row align-justify infobar-container">
 			<div id="infobar" class="column infobar">
 				<div class="row infobar-text 5player" style="display:none">
-					<div class="small-1 columns rv_ib_race" id="map_label">&nbsp;</div>
-					<div class="small-3 columns rv_ib_nick" id="map">&nbsp;</div>
+					<div class="small-1 columns rv_ib_race" id="map_label1">&nbsp;</div>
+					<div class="small-3 columns rv_ib_nick" id="map1">&nbsp;</div>
 					<div class="small-2 columns rv_ib_supply">SUPPLY</div>
 					<div class="small-1 columns rv_ib_minerals">MINERALS</div>
 					<div class="small-1 columns rv_ib_gas">GAS</div>
@@ -178,8 +178,8 @@ class Replay_Viewer_Widget extends WP_Widget {
 					<div class="small-2 columns rv_ib_apm" id="apm1">-</div>
 				</div>
 				<div class="row infobar-text 2player">
-					<div class="small-1 columns rv_ib_race" id="map_label">&nbsp;</div>
-					<div class="small-3 columns rv_ib_nick" id="map">&nbsp;</div>
+					<div class="small-1 columns rv_ib_race" id="map_label2">&nbsp;</div>
+					<div class="small-3 columns rv_ib_nick" id="map2">&nbsp;</div>
 					<div class="small-2 columns rv_ib_supply">SUPPLY</div>
 					<div class="small-1 columns rv_ib_minerals">MINERALS</div>
 					<div class="small-1 columns rv_ib_gas">GAS</div>

@@ -157,16 +157,16 @@ class Replay_Viewer_Staging extends WP_Widget {
 		wp_register_script( 'chartjs','https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js', '2.5.0', true);
 		wp_enqueue_script( 'chartjs' );
 		
-		wp_register_script( 'info-bar-staging', WP_PLUGIN_URL.'/replay_viewer_staging/info-bar.js', array('jquery'), '1.0.2', true);
+		wp_register_script( 'info-bar-staging', WP_PLUGIN_URL.'/replay_viewer_staging/info-bar.js', array('jquery'), '1.0.4', true);
 		wp_enqueue_script( 'info-bar-staging' );
 		
-		wp_register_script( 'staging', WP_PLUGIN_URL.'/replay_viewer_staging/staging.js', array('info-bar-staging'), '1.0.2', true);
+		wp_register_script( 'staging', WP_PLUGIN_URL.'/replay_viewer_staging/staging.js', array('info-bar-staging'), '1.0.4', true);
 		wp_enqueue_script( 'staging' );
 		
-		wp_register_script( 'start-staging', WP_PLUGIN_URL.'/replay_viewer_staging/start.js', array('info-bar-staging'), '1.0.2', true);
+		wp_register_script( 'start-staging', WP_PLUGIN_URL.'/replay_viewer_staging/start.js', array('info-bar-staging'), '1.0.4', true);
 		wp_enqueue_script( 'start-staging' );
 		
-		wp_register_script( 'test-staging', WP_PLUGIN_URL.'/replay_viewer_staging/test.js', array('start-staging'), '1.0.2', true);
+		wp_register_script( 'test-staging', WP_PLUGIN_URL.'/replay_viewer_staging/test.js', array('start-staging'), '1.0.3', true);
 		wp_enqueue_script( 'test-staging' );
 		
 		$rep_url = $_GET['rep'];
@@ -197,8 +197,8 @@ class Replay_Viewer_Staging extends WP_Widget {
 		<div class="expanded row align-justify infobar-container">
 			<div id="infobar" class="column infobar">
 				<div class="row infobar-text 5player" style="display:none">
-					<div class="small-1 columns rv_ib_race" id="map_label">&nbsp;</div>
-					<div class="small-3 columns rv_ib_nick" id="map">&nbsp;</div>
+					<div class="small-1 columns rv_ib_race" id="map_label1">&nbsp;</div>
+					<div class="small-3 columns rv_ib_nick" id="map1">&nbsp;</div>
 					<div class="small-2 columns rv_ib_supply">SUPPLY</div>
 					<div class="small-1 columns rv_ib_minerals">MINERALS</div>
 					<div class="small-1 columns rv_ib_gas">GAS</div>
@@ -217,8 +217,8 @@ class Replay_Viewer_Staging extends WP_Widget {
 					<div class="small-2 columns rv_ib_apm" id="apm1">-</div>
 				</div>
 				<div class="row infobar-text 2player">
-					<div class="small-1 columns rv_ib_race" id="map_label">&nbsp;</div>
-					<div class="small-3 columns rv_ib_nick" id="map">&nbsp;</div>
+					<div class="small-1 columns rv_ib_race" id="map_label2">&nbsp;</div>
+					<div class="small-3 columns rv_ib_nick" id="map2">&nbsp;</div>
 					<div class="small-2 columns rv_ib_supply">SUPPLY</div>
 					<div class="small-1 columns rv_ib_minerals">MINERALS</div>
 					<div class="small-1 columns rv_ib_gas">GAS</div>
